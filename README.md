@@ -41,4 +41,10 @@ For a Linux inbox using a single supplier policy:
 
 Deliver files by writing a temporary filename then atomically renaming to `.csv` in the inbox. The runner freezes input and policy, records progress before invoking the model, verifies returned artifact hashes, and skips previously seen content across restarts. Failed or interrupted jobs require `--retry-failed` (applied once, not on every watch cycle). A process lock prevents two runners sharing a state file. Keep state and outputs together. Core validation works without Strands; the inbox and agent entry points require the installed SDK and configured model credentials.
 
-Remaining: demonstration video and contest submission. No prize or payment has been earned by this project.
+## Demonstration
+
+[Watch the captioned demo](demo/import-review-demo.mp4) (2 minutes 53 seconds). It presents a fresh successful inbox invocation and its outputs; model waiting time is omitted. The captured command, result, duplicate check, input and actual tool transcript are in `examples/demo-run/`. These are recorded evidence, not fixtures used by the agent at runtime.
+
+To render the video again from that recorded evidence, install Pillow in a separate environment and make FFmpeg and the DejaVu fonts available, then run `python3 tools/render_demo.py`. The renderer writes to `outputs/demo-video/` and makes no model calls.
+
+Remaining: public YouTube/Vimeo upload and contest submission. No prize or payment has been earned by this project.

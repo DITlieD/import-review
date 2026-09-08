@@ -1,0 +1,367 @@
+{
+  "model_response": "The import job has been processed and exported. Here's the summary:\n\n---\n\n**Mapping Applied (all documented aliases, unambiguous):**\n| Canonical Field | CSV Header |\n|---|---|\n| `sku` | Code |\n| `quantity` | Qty |\n| `unit_price` | Price |\n\n**Results:**\n- **Accepted: 1** record\n- **Review: 3** records, for the following reasons:\n  - **Row 3** (SKU: B20) \u2014 `quantity` is `-1`; quantity must be a nonnegative integer.\n  - **Row 4** (SKU: C30) \u2014 Conflicting duplicate SKU.\n  - **Row 5** (SKU: C30) \u2014 Conflicting duplicate SKU (same SKU as row 4, with differing quantity).\n\n**Artifacts saved to:**\n`outputs/video-demo/jobs/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2`\n\nAll three review items remain in review status \u2014 no values were invented or overridden. The conflicting duplicate SKU (C30) and the negative quantity (B20) will need manual resolution per the supplier policy.\n",
+  "tool_results": [
+    {
+      "tool": "read_policy",
+      "result": {
+        "columns": {
+          "quantity": [
+            "quantity",
+            "Qty"
+          ],
+          "sku": [
+            "sku",
+            "Code"
+          ],
+          "unit_price": [
+            "unit_price",
+            "Price"
+          ]
+        },
+        "decimal_separator": ".",
+        "sku_case": "upper",
+        "trim": true,
+        "version": 1
+      }
+    },
+    {
+      "tool": "inspect_csv",
+      "result": {
+        "headers": [
+          "Code",
+          "Qty",
+          "Price"
+        ],
+        "sample": [
+          [
+            " 001ab ",
+            "2",
+            "1.2300"
+          ],
+          [
+            "B20",
+            "-1",
+            "2.00"
+          ],
+          [
+            "C30",
+            "4",
+            "3.00"
+          ]
+        ],
+        "records": 4
+      }
+    },
+    {
+      "tool": "propose_mapping",
+      "result": {
+        "mapping": {
+          "sku": "Code",
+          "quantity": "Qty",
+          "unit_price": "Price"
+        }
+      }
+    },
+    {
+      "tool": "validate_import",
+      "result": {
+        "accepted": 1,
+        "review": 3,
+        "issues": [
+          {
+            "row": 3,
+            "raw": {
+              "Code": "B20",
+              "Qty": "-1",
+              "Price": "2.00"
+            },
+            "values": {
+              "sku": "B20",
+              "quantity": "-1",
+              "unit_price": "2.00"
+            },
+            "reasons": [
+              "quantity must be a nonnegative integer"
+            ]
+          },
+          {
+            "row": 4,
+            "raw": {
+              "Code": "C30",
+              "Qty": "4",
+              "Price": "3.00"
+            },
+            "values": {
+              "sku": "C30",
+              "quantity": "4",
+              "unit_price": "3.00"
+            },
+            "reasons": [
+              "conflicting duplicate SKU"
+            ]
+          },
+          {
+            "row": 5,
+            "raw": {
+              "Code": "C30",
+              "Qty": "5",
+              "Price": "3.00"
+            },
+            "values": {
+              "sku": "C30",
+              "quantity": "5",
+              "unit_price": "3.00"
+            },
+            "reasons": [
+              "conflicting duplicate SKU"
+            ]
+          }
+        ],
+        "mapping": {
+          "sku": "Code",
+          "quantity": "Qty",
+          "unit_price": "Price"
+        }
+      }
+    },
+    {
+      "tool": "export_result",
+      "result": {
+        "directory": "outputs/video-demo/jobs/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2",
+        "accepted": 1,
+        "review": 3
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "Process the bound import job now."
+        }
+      ],
+      "tracking_id": "aaab2aae-447e-4a25-b287-46ddb95bc29d"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "I'll start by reading the supplier policy and inspecting the CSV in parallel, since these are independent steps."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "ae7cb055-5d79-4ff7-8801-bf567ea79b92",
+            "name": "read_policy",
+            "input": {}
+          }
+        },
+        {
+          "toolUse": {
+            "toolUseId": "b92b25a2-a1d5-4893-a137-f17dbe9ac6d4",
+            "name": "inspect_csv",
+            "input": {}
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 799,
+          "outputTokens": 53,
+          "totalTokens": 852
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 19797
+        }
+      },
+      "tracking_id": "6213f854-3038-4570-9fe7-8954f883d02c"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "ae7cb055-5d79-4ff7-8801-bf567ea79b92",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"columns\": {\"quantity\": [\"quantity\", \"Qty\"], \"sku\": [\"sku\", \"Code\"], \"unit_price\": [\"unit_price\", \"Price\"]}, \"decimal_separator\": \".\", \"sku_case\": \"upper\", \"trim\": true, \"version\": 1}"
+              }
+            ]
+          }
+        },
+        {
+          "toolResult": {
+            "toolUseId": "b92b25a2-a1d5-4893-a137-f17dbe9ac6d4",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"headers\": [\"Code\", \"Qty\", \"Price\"], \"sample\": [[\" 001ab \", \"2\", \"1.2300\"], [\"B20\", \"-1\", \"2.00\"], [\"C30\", \"4\", \"3.00\"]], \"records\": 4}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "1e6c391e-0f7a-4107-961d-aba6f394a265"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "The policy and CSV are loaded. Let me analyze what we have:\n\n**Policy (v1):**\n- Canonical fields: `quantity`, `sku`, `unit_price`\n- Aliases: `quantity` \u2190 \"quantity\"/\"Qty\", `sku` \u2190 \"sku\"/\"Code\", `unit_price` \u2190 \"unit_price\"/\"Price\"\n- Decimal separator: `.`, SKU case: upper, Trim: true\n\n**CSV headers:** \"Code\", \"Qty\", \"Price\" \u2014 all three are documented aliases and map unambiguously. I'll propose the mapping now."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "ee409265-bee0-4652-b51e-d3f173957540",
+            "name": "propose_mapping",
+            "input": {
+              "mapping": {
+                "sku": "Code",
+                "quantity": "Qty",
+                "unit_price": "Price"
+              }
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 931,
+          "outputTokens": 434,
+          "totalTokens": 1365
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 36114
+        }
+      },
+      "tracking_id": "cf1aab72-a3f1-4ea0-9a32-28740a358bce"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "ee409265-bee0-4652-b51e-d3f173957540",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"mapping\": {\"sku\": \"Code\", \"quantity\": \"Qty\", \"unit_price\": \"Price\"}}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "98d6fc4e-d561-4606-becd-407cfe0f7288"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "Mapping accepted. Now I'll validate the import."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "222ad81d-9173-480c-8baa-de287bd314b7",
+            "name": "validate_import",
+            "input": {}
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 1078,
+          "outputTokens": 16,
+          "totalTokens": 1094
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 6269
+        }
+      },
+      "tracking_id": "b01f457f-be11-49ff-8109-3f0e3620b12f"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "222ad81d-9173-480c-8baa-de287bd314b7",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"accepted\": 1, \"review\": 3, \"issues\": [{\"row\": 3, \"raw\": {\"Code\": \"B20\", \"Qty\": \"-1\", \"Price\": \"2.00\"}, \"values\": {\"sku\": \"B20\", \"quantity\": \"-1\", \"unit_price\": \"2.00\"}, \"reasons\": [\"quantity must be a nonnegative integer\"]}, {\"row\": 4, \"raw\": {\"Code\": \"C30\", \"Qty\": \"4\", \"Price\": \"3.00\"}, \"values\": {\"sku\": \"C30\", \"quantity\": \"4\", \"unit_price\": \"3.00\"}, \"reasons\": [\"conflicting duplicate SKU\"]}, {\"row\": 5, \"raw\": {\"Code\": \"C30\", \"Qty\": \"5\", \"Price\": \"3.00\"}, \"values\": {\"sku\": \"C30\", \"quantity\": \"5\", \"unit_price\": \"3.00\"}, \"reasons\": [\"conflicting duplicate SKU\"]}], \"mapping\": {\"sku\": \"Code\", \"quantity\": \"Qty\", \"unit_price\": \"Price\"}}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "147cb81e-3510-404d-93bc-cab2598f6ca0"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "Validation complete. Now I'll export the results."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "4cd64ad3-6151-4e9f-a8f5-aabd451513d6",
+            "name": "export_result",
+            "input": {}
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 1336,
+          "outputTokens": 16,
+          "totalTokens": 1352
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 6614
+        }
+      },
+      "tracking_id": "727f3363-bc61-48a4-b5c8-d171f343ddb3"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "4cd64ad3-6151-4e9f-a8f5-aabd451513d6",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"directory\": \"outputs/video-demo/jobs/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2\", \"accepted\": 1, \"review\": 3}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "0d147024-40ea-4d34-b821-f80d49d82da3"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "The import job has been processed and exported. Here's the summary:\n\n---\n\n**Mapping Applied (all documented aliases, unambiguous):**\n| Canonical Field | CSV Header |\n|---|---|\n| `sku` | Code |\n| `quantity` | Qty |\n| `unit_price` | Price |\n\n**Results:**\n- **Accepted: 1** record\n- **Review: 3** records, for the following reasons:\n  - **Row 3** (SKU: B20) \u2014 `quantity` is `-1`; quantity must be a nonnegative integer.\n  - **Row 4** (SKU: C30) \u2014 Conflicting duplicate SKU.\n  - **Row 5** (SKU: C30) \u2014 Conflicting duplicate SKU (same SKU as row 4, with differing quantity).\n\n**Artifacts saved to:**\n`outputs/video-demo/jobs/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2`\n\nAll three review items remain in review status \u2014 no values were invented or overridden. The conflicting duplicate SKU (C30) and the negative quantity (B20) will need manual resolution per the supplier policy."
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 1419,
+          "outputTokens": 264,
+          "totalTokens": 1683
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 27776
+        }
+      },
+      "tracking_id": "fdb1aa9e-f4ff-4d0f-803c-24cf72c8a8f3"
+    }
+  ]
+}

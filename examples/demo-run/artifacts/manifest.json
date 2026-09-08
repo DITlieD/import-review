@@ -1,0 +1,24 @@
+{
+  "accepted": 1,
+  "review": 3,
+  "input_rows": 4,
+  "transformations": [
+    {
+      "row": 2,
+      "field": "sku",
+      "from": " 001ab ",
+      "to": "001AB"
+    }
+  ],
+  "mapping": {
+    "sku": "Code",
+    "quantity": "Qty",
+    "unit_price": "Price"
+  },
+  "input_sha256": "df4d21fdb20a0ef98be3b528208c8f17a879caba169e9c1f3cc3edc63e3fa837",
+  "policy_sha256": "58e4574acd2c7a3745470c17a1c6b7a370fd61a6e1b372a987d7a37d364eb6a8",
+  "artifacts": {
+    "accepted.csv": "fe45c2e77a613f77f9c1f4571307cba78c715cd4bf0b09bae2e02048aea05d04",
+    "review.json": "3a71fcf51e4058492325eae3c3843dabed636abe1a61197a405a876647314e37"
+  }
+}

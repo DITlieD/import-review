@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-09-08T07:48:34.271334+00:00",
+  "command": [
+    ".venv/bin/python",
+    "inbox.py",
+    "outputs/video-demo/incoming",
+    "examples/policy.json",
+    "outputs/video-demo/jobs",
+    "--state",
+    "outputs/video-demo/state.json",
+    "--model",
+    "devin-free/glm-5-2",
+    "--base-url",
+    "http://127.0.0.1:9020/v1"
+  ],
+  "elapsed_seconds": 97.53,
+  "exit_code": 0,
+  "stdout": "{\"source\": \"supplier.csv\", \"status\": \"complete\", \"job\": \"a3007ea3f850e1697a5703521bf39766ad7efec7202513d08849ff27e83ff71e\", \"directory\": \"outputs/video-demo/jobs/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2\"}\n",
+  "stderr": "",
+  "repeat": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "directory": "outputs/video-demo/jobs/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2"
+}
