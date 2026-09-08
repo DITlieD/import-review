@@ -25,4 +25,12 @@ With AWS credentials configured for an eligible Bedrock model, run:
 
 The adapter requires successful tool validation before export, limits the job to eight model calls, and saves actual SDK messages in `agent-trace.json`. Model inference can incur provider costs; the local core command makes no model calls. Never put credentials in this repository.
 
-Remaining: watched inbox, real model integration test, demonstration video and contest submission. No prize or payment has been earned by this project.
+For a Linux inbox using a single supplier policy:
+
+```sh
+.venv/bin/python inbox.py incoming examples/policy.json outputs --state outputs/inbox-state.json --model MODEL_ID --watch
+```
+
+Deliver files by writing a temporary filename then atomically renaming to `.csv` in the inbox. The runner freezes input and policy, records progress before invoking the model, verifies returned artifact hashes, and skips previously seen content across restarts. Failed or interrupted jobs require `--retry-failed` (applied once, not on every watch cycle). A process lock prevents two runners sharing a state file. Keep state and outputs together. Core validation works without Strands; the inbox and agent entry points require the installed SDK and configured model credentials.
+
+Remaining: real model integration test, demonstration video and contest submission. No prize or payment has been earned by this project.
