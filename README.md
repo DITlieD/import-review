@@ -1,11 +1,13 @@
 # Import Review
 
-Supplier CSV import validation with an audit trail. This is the deterministic core of a planned Strands agent; live agent integration is not implemented yet.
+Supplier CSV import validation with an audit trail. A Strands adapter exposes five job-bound tools. A live model integration run has not yet been verified.
 
 Python 3.11+; no dependencies for the core.
 
 ```sh
-python3 -m unittest discover -s tests -v
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m unittest discover -s tests -v
 python3 import_review.py examples/supplier.csv examples/policy.json outputs
 ```
 
@@ -15,4 +17,12 @@ Policies explicitly define aliases, trimming, SKU case and decimal separator. Un
 
 The example uses synthetic inventory only. Output CSV is intended for programmatic import; text is preserved and is not escaped for spreadsheet formula evaluation.
 
-Remaining: Strands tools and agent, watched inbox, real model integration test, demonstration video and contest submission. No prize or payment has been earned by this project.
+With AWS credentials configured for an eligible Bedrock model, run:
+
+```sh
+.venv/bin/python agent_runner.py examples/supplier.csv examples/policy.json outputs --model MODEL_ID
+```
+
+The adapter requires successful tool validation before export, limits the job to eight model calls, and saves actual SDK messages in `agent-trace.json`. Model inference can incur provider costs; the local core command makes no model calls. Never put credentials in this repository.
+
+Remaining: watched inbox, real model integration test, demonstration video and contest submission. No prize or payment has been earned by this project.
