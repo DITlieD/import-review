@@ -1,6 +1,6 @@
 # Import Review
 
-Supplier CSV import validation with an audit trail. A Strands adapter exposes five job-bound tools. A live model integration run has not yet been verified.
+Supplier CSV import validation with an audit trail. A Strands adapter exposes five job-bound tools. A real model run through an OpenAI-compatible gateway has been verified; Bedrock access in the development account remains unavailable.
 
 Python 3.11+; no dependencies for the core.
 
@@ -25,6 +25,14 @@ With AWS credentials configured for an eligible Bedrock model, run:
 
 The adapter requires successful tool validation before export, limits the job to eight model calls, and saves actual SDK messages in `agent-trace.json`. Model inference can incur provider costs; the local core command makes no model calls. Never put credentials in this repository.
 
+For a tool-capable OpenAI-compatible provider, set `OPENAI_API_KEY` in your environment and add `--base-url`:
+
+```sh
+.venv/bin/python agent_runner.py examples/supplier.csv examples/policy.json outputs --model MODEL_ID --base-url http://127.0.0.1:9020/v1
+```
+
+The gateway is configured by the operator and is not bundled. Both commands support the same provider options. Gateway calls use a 90-second request timeout, no transport retries, and provider-default temperature. The verified development run used ZenoV with `devin-free/glm-5-2`; availability and pricing depend on your own provider account. See [architecture and verification](ARCHITECTURE.md).
+
 For a Linux inbox using a single supplier policy:
 
 ```sh
@@ -33,4 +41,4 @@ For a Linux inbox using a single supplier policy:
 
 Deliver files by writing a temporary filename then atomically renaming to `.csv` in the inbox. The runner freezes input and policy, records progress before invoking the model, verifies returned artifact hashes, and skips previously seen content across restarts. Failed or interrupted jobs require `--retry-failed` (applied once, not on every watch cycle). A process lock prevents two runners sharing a state file. Keep state and outputs together. Core validation works without Strands; the inbox and agent entry points require the installed SDK and configured model credentials.
 
-Remaining: real model integration test, demonstration video and contest submission. No prize or payment has been earned by this project.
+Remaining: demonstration video and contest submission. No prize or payment has been earned by this project.

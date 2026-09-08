@@ -3,9 +3,9 @@ import argparse
 import json
 from pathlib import Path
 from strands import Agent, tool
-from strands.models import BedrockModel
 from strands.hooks import BeforeModelCallEvent, HookProvider
 from workflow import ImportSession
+from model_config import add_model_arguments, create_model
 
 PROMPT = """You process a single supplier inventory import. Read the supplier policy
 and inspect the CSV. Select only documented aliases with propose_mapping when
@@ -57,11 +57,9 @@ def main():
     parser.add_argument("csv", type=Path)
     parser.add_argument("policy", type=Path)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--model", required=True, help="Bedrock model ID available in your account")
-    parser.add_argument("--region", default="ap-southeast-2")
+    add_model_arguments(parser)
     args = parser.parse_args()
-    model = BedrockModel(model_id=args.model, region_name=args.region,
-                         max_tokens=1500, temperature=0)
+    model = create_model(args)
     print(run_job(args.csv, args.policy, args.output, model))
 
 

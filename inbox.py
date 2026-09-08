@@ -68,14 +68,13 @@ def main():
     parser.add_argument("policy", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--state", type=Path, required=True)
-    parser.add_argument("--model", required=True)
-    parser.add_argument("--region", default="ap-southeast-2")
+    from model_config import add_model_arguments, create_model
+    add_model_arguments(parser)
     parser.add_argument("--watch", action="store_true")
     parser.add_argument("--retry-failed", action="store_true")
     args = parser.parse_args()
-    from strands.models import BedrockModel
     from agent_runner import run_job
-    model = BedrockModel(model_id=args.model, region_name=args.region, max_tokens=1500, temperature=0)
+    model = create_model(args)
     retry = args.retry_failed
     while True:
         events = scan_once(args.inbox, args.policy, args.output, args.state,

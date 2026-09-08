@@ -1,0 +1,367 @@
+{
+  "model_response": "Import processing is complete. Here's the summary:\n\n**Mapping applied** (all from documented aliases):\n| Canonical Field | CSV Header |\n|---|---|\n| `sku` | `Code` |\n| `quantity` | `Qty` |\n| `unit_price` | `Price` |\n\n**Validation results:**\n- **Accepted: 1** record (row 2 \u2014 SKU `001AB`, qty 2, price 1.23)\n- **Review: 3** records:\n  - **Row 3** (`B20`): quantity `-1` \u2014 rejected because quantity must be a non-negative integer.\n  - **Row 4** (`C30`, qty 4): conflicting duplicate SKU.\n  - **Row 5** (`C30`, qty 5): conflicting duplicate SKU.\n\n**Export:** Artifacts were saved to `outputs/zenov-default-live/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2`.\n\nNo values were invented or overridden \u2014 the 3 flagged records remain in review for manual resolution.\n",
+  "tool_results": [
+    {
+      "tool": "read_policy",
+      "result": {
+        "version": 1,
+        "columns": {
+          "sku": [
+            "sku",
+            "Code"
+          ],
+          "quantity": [
+            "quantity",
+            "Qty"
+          ],
+          "unit_price": [
+            "unit_price",
+            "Price"
+          ]
+        },
+        "trim": true,
+        "sku_case": "upper",
+        "decimal_separator": "."
+      }
+    },
+    {
+      "tool": "inspect_csv",
+      "result": {
+        "headers": [
+          "Code",
+          "Qty",
+          "Price"
+        ],
+        "sample": [
+          [
+            " 001ab ",
+            "2",
+            "1.2300"
+          ],
+          [
+            "B20",
+            "-1",
+            "2.00"
+          ],
+          [
+            "C30",
+            "4",
+            "3.00"
+          ]
+        ],
+        "records": 4
+      }
+    },
+    {
+      "tool": "propose_mapping",
+      "result": {
+        "mapping": {
+          "sku": "Code",
+          "quantity": "Qty",
+          "unit_price": "Price"
+        }
+      }
+    },
+    {
+      "tool": "validate_import",
+      "result": {
+        "accepted": 1,
+        "review": 3,
+        "issues": [
+          {
+            "row": 3,
+            "raw": {
+              "Code": "B20",
+              "Qty": "-1",
+              "Price": "2.00"
+            },
+            "values": {
+              "sku": "B20",
+              "quantity": "-1",
+              "unit_price": "2.00"
+            },
+            "reasons": [
+              "quantity must be a nonnegative integer"
+            ]
+          },
+          {
+            "row": 4,
+            "raw": {
+              "Code": "C30",
+              "Qty": "4",
+              "Price": "3.00"
+            },
+            "values": {
+              "sku": "C30",
+              "quantity": "4",
+              "unit_price": "3.00"
+            },
+            "reasons": [
+              "conflicting duplicate SKU"
+            ]
+          },
+          {
+            "row": 5,
+            "raw": {
+              "Code": "C30",
+              "Qty": "5",
+              "Price": "3.00"
+            },
+            "values": {
+              "sku": "C30",
+              "quantity": "5",
+              "unit_price": "3.00"
+            },
+            "reasons": [
+              "conflicting duplicate SKU"
+            ]
+          }
+        ],
+        "mapping": {
+          "sku": "Code",
+          "quantity": "Qty",
+          "unit_price": "Price"
+        }
+      }
+    },
+    {
+      "tool": "export_result",
+      "result": {
+        "directory": "outputs/zenov-default-live/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2",
+        "accepted": 1,
+        "review": 3
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "Process the bound import job now."
+        }
+      ],
+      "tracking_id": "765908f2-f2cd-4a7a-941f-12dd8c9716f1"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "I'll begin by reading the supplier policy and inspecting the CSV in parallel, since these are independent steps."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "5b5636d3-fb80-4fb1-875e-3dbe05c6966d",
+            "name": "read_policy",
+            "input": {}
+          }
+        },
+        {
+          "toolUse": {
+            "toolUseId": "67548a01-f169-4164-b127-dac19dab6e4a",
+            "name": "inspect_csv",
+            "input": {}
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 799,
+          "outputTokens": 53,
+          "totalTokens": 852
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 5469
+        }
+      },
+      "tracking_id": "abba3466-8d84-4522-a640-3e8bdfcf195d"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "5b5636d3-fb80-4fb1-875e-3dbe05c6966d",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"version\": 1, \"columns\": {\"sku\": [\"sku\", \"Code\"], \"quantity\": [\"quantity\", \"Qty\"], \"unit_price\": [\"unit_price\", \"Price\"]}, \"trim\": true, \"sku_case\": \"upper\", \"decimal_separator\": \".\"}"
+              }
+            ]
+          }
+        },
+        {
+          "toolResult": {
+            "toolUseId": "67548a01-f169-4164-b127-dac19dab6e4a",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"headers\": [\"Code\", \"Qty\", \"Price\"], \"sample\": [[\" 001ab \", \"2\", \"1.2300\"], [\"B20\", \"-1\", \"2.00\"], [\"C30\", \"4\", \"3.00\"]], \"records\": 4}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "0c8bec1d-0dd5-4416-b33c-f6ceb40cafa5"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "I have the policy and CSV details. The CSV headers (`Code`, `Qty`, `Price`) all match documented aliases in the policy. I'll now propose the mapping."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "990b4641-eb4e-4803-96b5-b9a4de1d0dc7",
+            "name": "propose_mapping",
+            "input": {
+              "mapping": {
+                "sku": "Code",
+                "quantity": "Qty",
+                "unit_price": "Price"
+              }
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 931,
+          "outputTokens": 158,
+          "totalTokens": 1089
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 18560
+        }
+      },
+      "tracking_id": "0bf3c558-55f4-4727-b148-0e39dd3389c1"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "990b4641-eb4e-4803-96b5-b9a4de1d0dc7",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"mapping\": {\"sku\": \"Code\", \"quantity\": \"Qty\", \"unit_price\": \"Price\"}}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "db148824-b55a-4d21-ba9a-603d45d528ea"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "Mapping accepted. Now I'll validate the import."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "cf03ed1c-e77e-4381-b788-cb918d95b293",
+            "name": "validate_import",
+            "input": {}
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 995,
+          "outputTokens": 16,
+          "totalTokens": 1011
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 9099
+        }
+      },
+      "tracking_id": "35a08e16-1b1a-4720-b0dc-1b095c5eaa97"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "cf03ed1c-e77e-4381-b788-cb918d95b293",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"accepted\": 1, \"review\": 3, \"issues\": [{\"row\": 3, \"raw\": {\"Code\": \"B20\", \"Qty\": \"-1\", \"Price\": \"2.00\"}, \"values\": {\"sku\": \"B20\", \"quantity\": \"-1\", \"unit_price\": \"2.00\"}, \"reasons\": [\"quantity must be a nonnegative integer\"]}, {\"row\": 4, \"raw\": {\"Code\": \"C30\", \"Qty\": \"4\", \"Price\": \"3.00\"}, \"values\": {\"sku\": \"C30\", \"quantity\": \"4\", \"unit_price\": \"3.00\"}, \"reasons\": [\"conflicting duplicate SKU\"]}, {\"row\": 5, \"raw\": {\"Code\": \"C30\", \"Qty\": \"5\", \"Price\": \"3.00\"}, \"values\": {\"sku\": \"C30\", \"quantity\": \"5\", \"unit_price\": \"3.00\"}, \"reasons\": [\"conflicting duplicate SKU\"]}], \"mapping\": {\"sku\": \"Code\", \"quantity\": \"Qty\", \"unit_price\": \"Price\"}}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "43f229b2-0aee-4292-bc1b-d28dabc1fadb"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "Validation complete. I'll now export the results."
+        },
+        {
+          "toolUse": {
+            "toolUseId": "0438f914-9476-453e-afa8-d3f196c6e426",
+            "name": "export_result",
+            "input": {}
+          }
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 1253,
+          "outputTokens": 16,
+          "totalTokens": 1269
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 4141
+        }
+      },
+      "tracking_id": "0b712722-c3ff-42cc-9575-22f69d1377fc"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "toolResult": {
+            "toolUseId": "0438f914-9476-453e-afa8-d3f196c6e426",
+            "status": "success",
+            "content": [
+              {
+                "text": "{\"directory\": \"outputs/zenov-default-live/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2\", \"accepted\": 1, \"review\": 3}"
+              }
+            ]
+          }
+        }
+      ],
+      "tracking_id": "c9c142af-e06a-4527-a332-c76fe6a2f020"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "text": "Import processing is complete. Here's the summary:\n\n**Mapping applied** (all from documented aliases):\n| Canonical Field | CSV Header |\n|---|---|\n| `sku` | `Code` |\n| `quantity` | `Qty` |\n| `unit_price` | `Price` |\n\n**Validation results:**\n- **Accepted: 1** record (row 2 \u2014 SKU `001AB`, qty 2, price 1.23)\n- **Review: 3** records:\n  - **Row 3** (`B20`): quantity `-1` \u2014 rejected because quantity must be a non-negative integer.\n  - **Row 4** (`C30`, qty 4): conflicting duplicate SKU.\n  - **Row 5** (`C30`, qty 5): conflicting duplicate SKU.\n\n**Export:** Artifacts were saved to `outputs/zenov-default-live/adacdc0d7ef68f042bff1296504fb25c760d044f2f155e8ed836b870cee7e7e2`.\n\nNo values were invented or overridden \u2014 the 3 flagged records remain in review for manual resolution."
+        }
+      ],
+      "metadata": {
+        "usage": {
+          "inputTokens": 1337,
+          "outputTokens": 245,
+          "totalTokens": 1582
+        },
+        "metrics": {
+          "latencyMs": 0,
+          "timeToFirstByteMs": 20801
+        }
+      },
+      "tracking_id": "c03e38c0-305d-4b2a-8af1-435a58df2d5a"
+    }
+  ]
+}
