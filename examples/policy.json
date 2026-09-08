@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "columns": {"sku": ["sku", "Code"], "quantity": ["quantity", "Qty"], "unit_price": ["unit_price", "Price"]},
+  "trim": true,
+  "sku_case": "upper",
+  "decimal_separator": "."
+}
